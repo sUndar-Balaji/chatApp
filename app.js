@@ -73,14 +73,13 @@ io.on ( 'connect', function (socket) {
 
 		//console.log (d);
 
-		socket.to ('room1').emit ('newMsg', { msg: d, userSent: socket.nickname });
-
+		socket.to ('room1').emit ('newMsg', { msg: d, userSent: socket.nickname }); 
 	});
 
 
 	socket.on ('sendImg', function (d) {
 
-		socket.to ('room1').emit ('newImg', { userSent: socket.nickname, data: d });
+		socket.to ('room1').emit ('newImg', { userSent: socket.nickname, data: d.data, type: d.type  });
 
 	} );
 

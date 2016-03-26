@@ -153,6 +153,7 @@
 
 
                         document.getElementById('drop_zone').appendChild (img) ;
+                        socket.emit ('sendImg', { data: dataURI, type: 'image' });
                     }
                     	else {
                     		var video = document.createElement("video");
@@ -160,10 +161,11 @@
 
 
                         document.getElementById('drop_zone').appendChild (video) ;
+                        socket.emit ('sendImg', { data: dataURI, type: 'video' });
+
                     	}
 
-                        socket.emit ('sendImg', dataURI);
-
+                        
                         //Insert the image at the carat
 /*
                         // Try the standards-based way first. This works in FF
@@ -200,13 +202,24 @@
 
     	socket.on ( 'newImg', function (d) {
 
-    		if (file.type.match('image.*'))
-    		$(".chats").append($( "<p><b>" + d.userSent + "</b>: <img src=" + d.data + "></p>" )); 
+    		if ( d.type === 'image' ) 
+    		$(".chats").append($( "<p><b>" + d.userSent + "</b>: <img src=" + d.data + " width='130px' height='100px'></p>" )); 
     		else
     		$(".chats").append($( "<p><b>" + d.userSent + "</b>: <video src=" + d.data + "></video></p>" )); 	
 			$(".chats").scrollTop($(".chats")[0].scrollHeight); 
 
     	} );
+
+        $(".chats").on ( "click", "img", function () {
+
+            $(".modal") 
+                        .find("img")
+                        .attr("src", $(this).attr("src"))
+                        .end()
+                    .modal ("toggle");
+
+
+        } );
 
 
 }(window, io);
